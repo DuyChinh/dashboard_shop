@@ -42,14 +42,13 @@
         </v-main>
       </v-layout>
     </v-card>
-  </template>
+</template>
   
-  <script setup>
-    import { ref, onMounted } from "vue"
-    const drawer = ref(null)
-    const title = ref();
-    onMounted(() => {
-      title.value = localStorage.getItem("email")
-    })
-  </script>
-  
+<script setup>
+  import { ref, onMounted } from "vue"
+  const drawer = ref(null)
+  const title = ref();
+  onMounted(() => {
+    title.value = localStorage.getItem("email")
+  })
+</script>
