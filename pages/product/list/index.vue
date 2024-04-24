@@ -93,8 +93,19 @@
             >
                 <!-- Image -->
                 <template #item.src="{ item }">
-                    <img src={{ item.src }} alt="">
+                    <img class="product-img" :src="item.src"/>
                 </template>
+
+                <!-- Product Name -->
+                <template #item.title="{ item }">
+                    <NuxtLink
+                        :to="`/product/view/${item.id}`" 
+                        class=" text-decoration-none text-black product-name"
+                        >
+                        {{ item.title }}
+                    </NuxtLink>
+                </template>
+
                 <!-- Actions -->
                 <template #item.actions="{ item }">
                     <VBtn
@@ -141,6 +152,22 @@
 
 <style>
     .section {
-        background: #f7f7f9;
+        padding-top: 40px;
+        /* background: #f7f7f9; */
+    }
+
+    .product-img {
+        margin: 8px 0;
+        width: 60px;
+        height: 60px;
+        border-radius: 8px;
+        object-fit: contain;
+    }
+    .product-name {
+        font-weight: 600;
+    }
+
+    .product-name:hover {
+        opacity: 0.8;
     }
 </style>
