@@ -2,12 +2,15 @@
 <script setup>
     import axios from 'axios';
     import { ref, onMounted } from "vue"
-    // import { VSkeletonLoader } from 'vuetify/labs/VSkeletonLoader'
+    // import DeleteDialog from "@components/dialogs/DeleteDialog"
+    import DeleteDialog from "@/components/dialogs/DeleteDialog"
     const products = ref()
     const totalProducts = ref(0)
     const infoProducts = ref()
     const selectedPrice = ref()
     const searchQuery = ref()
+    const isDelete = ref(false);
+    const deleteProduct = ref()
     const priceLevels = ["100,000 - 1,000,000", "1,000,000 - 5,000,000", "5,000,000 - 20,000,00", "> 20,000,000"]
     let productData;
     const loading = ref(false)
@@ -99,6 +102,12 @@
             }
         }
     });
+
+    //delete products
+    const handleDeleteProduct = (product) => {
+        isDelete.value = true;
+        deleteProduct.value = product;
+    }
 </script>
 
 <template>
@@ -135,33 +144,6 @@
                             Export
                         </VBtn>
                     </template>
-
-                    <!-- <v-list>
-                    <v-list-item class="cursor-pointer choose-file-item">
-                        <v-list-item-title>
-                            <download-excel 
-                                :data="productsInfo"
-                                name="products.xls"
-                                
-                            >
-                                Excel
-                            </download-excel>
-                        </v-list-item-title>
-                    </v-list-item>
-                    <v-list-item class="cursor-pointer choose-file-item">
-                        <v-list-item-title>
-                            <download-excel 
-                                :data="productsInfo"
-                                type="csv"
-                                name="roducts.csv"
-                            
-                                :escapeCsv="false"
-                            >
-                                CSV
-                            </download-excel>
-                        </v-list-item-title>
-                    </v-list-item>
-                    </v-list> -->
             
                 </v-menu>
 
@@ -259,6 +241,10 @@
                 </template>
             </v-data-table-server>
         </VCard>
+        <DeleteDialog 
+            v-model:isDelete="isDelete"
+            v-model:deleteProduct="deleteProduct"
+        />
     </section>
 
 </template>

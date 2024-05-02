@@ -1,7 +1,7 @@
 <template>
 <div>
-    <h2>Hpome</h2>
-    <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Aspernatur, laborum.</p>
+    <h2>Home</h2>
+    <p>Hello, This is dardboard shop</p>
 </div>
 </template>
 

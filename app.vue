@@ -1,26 +1,16 @@
 <template>
     <NuxtLayout>
       <v-app>
-        <!-- <VRow>
-          <VCol lg="2" cols="12" xs="1">
-            <Sidebar/>
-          </VCol>
-  
-          <VCol lg="10" cols="12" xs="11">
-            <RouterView/>
-          </VCol>
-        </VRow> -->
-        <div style="position: relative">
-          <Sidebar class="sidebar"/>
-          <NuxtPage class="nuxt-page" />
-        </div>
+          <div style="position: relative">
+            <Sidebar class="sidebar"/>
+            <NuxtPage class="nuxt-page" />
+          </div>
       </v-app>
     </NuxtLayout>
 </template>
 
 <script setup>
   import Sidebar from "./components/Sidebar.vue"
-
 </script>
 
 <style>
@@ -28,14 +18,15 @@
     position: absolute; 
     top: 0; 
     right: 0; 
-    width: 84%; 
+    width: 81%; 
     z-index: 0;
+    padding: 30px 5px;
   }
   .sidebar {
     position: absolute; 
     left: 0; 
     top: 0; 
-    width: 15%; 
+    width: 18%; 
     z-index: 99; 
     background:#fff;
   }
@@ -45,6 +36,7 @@
     }
     .nuxt-page {
       width: 76%;
+      padding: 10px 5px;
     }
   }
    @media screen and (min-width: 421px) and (max-width: 576px) {
