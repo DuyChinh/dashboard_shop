@@ -2,18 +2,19 @@
 <script setup>
     import axios from 'axios';
     import { ref, onMounted } from "vue"
-    // import DeleteDialog from "@components/dialogs/DeleteDialog"
+    import AddNewProduct from '@/views/product/list/AddNewProduct'
     import DeleteDialog from "@/components/dialogs/DeleteDialog"
-    const products = ref()
-    const totalProducts = ref(0)
-    const infoProducts = ref()
-    const selectedPrice = ref()
-    const searchQuery = ref()
+    const products = ref();
+    const totalProducts = ref(0);
+    const infoProducts = ref();
+    const selectedPrice = ref();
+    const searchQuery = ref();
     const isDelete = ref(false);
-    const deleteProduct = ref()
+    const deleteProduct = ref();
+    const isAddNewProduct = ref(false);
     const priceLevels = ["100,000 - 1,000,000", "1,000,000 - 5,000,000", "5,000,000 - 20,000,00", "> 20,000,000"]
     let productData;
-    const loading = ref(false)
+    const loading = ref(false);
     const headers = [
         {
             title: 'Id',
@@ -163,7 +164,7 @@
                     <!-- 👉 Add product button -->
                     <VBtn
                         class="order-sm-2 order-1 mt-3 text-white bg-blue"
-                        @click="isAddProduct = true"
+                        @click="isAddNewProduct = true"
                     >
                         Add Product
                     </VBtn>
@@ -217,7 +218,7 @@
 
                         <VMenu activator="parent">
                             <VList>
-                                <VListItem >
+                                <VListItem :to="`/product/view/${item.id}`">
                                 <template #prepend>
                                     <VIcon icon="mdi-eye-outline" />
                                 </template>
@@ -245,6 +246,9 @@
             v-model:isDelete="isDelete"
             v-model:deleteProduct="deleteProduct"
         />
+        <AddNewProduct
+            v-model:isAddNewProduct="isAddNewProduct"
+        />
     </section>
 
 </template>
@@ -271,12 +275,12 @@
         opacity: 0.8;
     }
 
-    .v-field__outline {
+    /* .v-field__outline {
         border: 1px solid #ccc !important;
         outline: none;
         border-top-left-radius: 8px;
         border-top-right-radius: 8px;
-    }
+    } */
 
     .v-field__loader {
         width: 0 !important;
