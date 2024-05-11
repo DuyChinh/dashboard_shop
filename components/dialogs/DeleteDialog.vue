@@ -1,6 +1,7 @@
 <script setup>
     import { ref } from "vue"
     import axios from 'axios'
+    import { toast } from 'vue3-toastify';
     import {
         emailValidator,
         requiredValidator,
@@ -30,9 +31,11 @@
         .then((res) => {
             emit('update:isDelete', false);
             emit('productData', product);
+            toast.success(res.data.message);
         })
         .catch((e) => {
-            console.log(e);
+            emit('update:isDelete', false);
+            toast.error(e.message);
         })
     }
 

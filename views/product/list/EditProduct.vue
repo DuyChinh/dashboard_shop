@@ -5,33 +5,50 @@
     } from "@/@core/utils/validators"
     import axios from "axios";
     import { toast } from 'vue3-toastify';
+    import { watchEffect } from "vue";
     const productName = ref();
     const newPrice = ref();
     const oldPrice = ref();
     const amount = ref();
     const linkImg = ref();
     const refForm = ref();
+    const productId = ref();
     const props = defineProps({
-        isAddNewProduct: {
+        isEditProduct: {
             type: Boolean,
             required: true,
+        },
+        productEdit: {
+            type: Object,
         }
     })
 
+    const setDefaultValue = () => {
+        if(props.isEditProduct) {
+            productId.value = props.productEdit.id;
+            productName.value = props.productEdit.title;
+            newPrice.value = props.productEdit.price;
+            oldPrice.value = props.productEdit.price_old;
+            amount.value = props.productEdit.limit;
+            linkImg.value = props.productEdit.src;
+        } 
+    }
+    watchEffect(setDefaultValue)
+
     const emit = defineEmits([
-        'update:isAddNewProduct',
-        'productAdded'
+        'update:isEditProduct',
+        'productEdit'
     ])
 
     const closeDialog = () => {
-        emit('update:isAddNewProduct',false);
+        emit('update:isEditProduct',false);
         nextTick(() => {
             refForm.value?.reset()
             refForm.value?.resetValidation()
         })
     }
 
-    const addProduct = () => {
+    const editProduct = () => {
         refForm.value?.validate().then(async({valid}) => {
             if(valid) {
                 const body = {
@@ -41,12 +58,11 @@
                     limit: amount.value,
                     src: linkImg.value,
                 }
-                console.log(body);
-                await axios.post(`https://apishopdc.vercel.app/products`, body)
+                await axios.patch(`https://apishopdc.vercel.app/products/${productId.value}`, body)
                 .then((res) => {
                     toast.success(res.data.message);
-                    emit('update:isAddNewProduct',false);
-                    emit('productAdded', res.data.data);
+                    emit('update:isEditProduct',false);
+                    emit('productEdit', res.data.data);
                 })
                 .catch((e) => {
                     toast.error(e.message);
@@ -63,13 +79,13 @@
 
 <template>
     <div class="pa-4 text-center">
-        <v-dialog v-model="props.isAddNewProduct" max-width="550" persistent>
+        <v-dialog v-model="props.isEditProduct" max-width="550" persistent>
             <v-card>
                 <v-card-title>
-                    <v-icon icon="mdi-plus-box" color="green"/> Add New Product
+                    <v-icon icon="mdi-pencil" color="yellow"/> Edit Product
                 </v-card-title>
                 <v-card-text>
-                    <v-form ref="refForm" @submit.prevent="addProduct" >
+                    <v-form ref="refForm" @submit.prevent="editProduct" >
                         <v-row>
                             <!-- product name -->
                             <v-col cols="12">
@@ -138,7 +154,7 @@
                             <!-- add and cancel -->
                             <v-col cols="12" class="text-end">
                                 <v-btn @click="closeDialog" class="mr-6 text-white bg-blue">Cancel</v-btn>
-                                <v-btn type="submit" class="mr-6 text-white bg-green">Add</v-btn>
+                                <v-btn type="submit" class="mr-6 text-white bg-green">Submit</v-btn>
                             </v-col>
                             
                         </v-row>

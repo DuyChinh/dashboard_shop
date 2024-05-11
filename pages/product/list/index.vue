@@ -4,6 +4,8 @@
     import { ref, onMounted } from "vue"
     import AddNewProduct from '@/views/product/list/AddNewProduct'
     import DeleteDialog from "@/components/dialogs/DeleteDialog"
+    import EditProduct from '~/views/product/list/EditProduct.vue';
+    import { toast } from 'vue3-toastify';
     const products = ref();
     const totalProducts = ref(0);
     const infoProducts = ref();
@@ -12,6 +14,9 @@
     const isDelete = ref(false);
     const deleteProduct = ref();
     const isAddNewProduct = ref(false);
+    const isEditProduct = ref(false);
+    const editProduct= ref();
+
     const priceLevels = ["100,000 - 1,000,000", "1,000,000 - 5,000,000", "5,000,000 - 20,000,00", "> 20,000,000"]
     let productData;
     const loading = ref(false);
@@ -84,7 +89,6 @@
     const removeDiacritics = (str) => {
         return str.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
     };
-
     const searchProduct = () => {
     infoProducts.value = productData;
     if(searchQuery.value) {
@@ -108,6 +112,22 @@
     const handleDeleteProduct = (product) => {
         isDelete.value = true;
         deleteProduct.value = product;
+    }
+
+    //handle after added
+    const handleAfterAdded = () => {
+        getProducts();
+    }
+
+     //handle after deleted
+     const handleAfterDeleted = () => {
+        getProducts();
+    }
+
+    //edit product 
+    const handleEditProduct = (product) => {
+        isEditProduct.value = true;
+        editProduct.value = product;
     }
 </script>
 
@@ -245,9 +265,16 @@
         <DeleteDialog 
             v-model:isDelete="isDelete"
             v-model:deleteProduct="deleteProduct"
+            @productData="handleAfterDeleted"
         />
         <AddNewProduct
             v-model:isAddNewProduct="isAddNewProduct"
+            @productAdded="handleAfterAdded"
+        />
+        <EditProduct
+            v-model:isEditProduct="isEditProduct"
+            v-model:productEdit="editProduct"
+            @productEdit="getProducts"
         />
     </section>
 

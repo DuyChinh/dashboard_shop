@@ -4,11 +4,9 @@
     const route = useRoute()
     const id = route.params.id;
     const apiKey = process.env.NUXT_BASE_URL;
-    console.log("apiKey", apiKey);
     const getProduct = async() => {
         await axios.get(`https://apishopdc.vercel.app/products/${id}`)
         .then((res) => {
-            console.log(res);
             product.value = res.data.data;
         })
         .catch((e) => {
